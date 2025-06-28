@@ -1,4 +1,3 @@
-import java.awt.*;
 import java.sql.*;
 import javax.swing.*;
 
@@ -14,58 +13,51 @@ public class RegisterForm extends JFrame {
         setSize(400, 350);
         setLocationRelativeTo(null);
 
-        JPanel panel = new JPanel(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10);
-        gbc.fill = GridBagConstraints.HORIZONTAL;
+        JPanel panel = new JPanel();
+        panel.setLayout(null);  // null layout
 
         JLabel usernameLabel = new JLabel("Username:");
-        gbc.gridx = 0; gbc.gridy = 0;
-        panel.add(usernameLabel, gbc);
+        usernameLabel.setBounds(30, 30, 120, 25);
+        panel.add(usernameLabel);
 
         usernameField = new JTextField(20);
-        gbc.gridx = 1; gbc.gridy = 0;
-        panel.add(usernameField, gbc);
+        usernameField.setBounds(160, 30, 180, 25);
+        panel.add(usernameField);
 
-        
         JLabel emailLabel = new JLabel("Email:");
-        gbc.gridx = 0; gbc.gridy = 1;
-        panel.add(emailLabel, gbc);
+        emailLabel.setBounds(30, 70, 120, 25);
+        panel.add(emailLabel);
 
         emailField = new JTextField(20);
-        gbc.gridx = 1; gbc.gridy = 1;
-        panel.add(emailField, gbc);
+        emailField.setBounds(160, 70, 180, 25);
+        panel.add(emailField);
 
-        
         JLabel passwordLabel = new JLabel("Password:");
-        gbc.gridx = 0; gbc.gridy = 2;
-        panel.add(passwordLabel, gbc);
+        passwordLabel.setBounds(30, 110, 120, 25);
+        panel.add(passwordLabel);
 
         passwordField = new JPasswordField(20);
-        gbc.gridx = 1; gbc.gridy = 2;
-        panel.add(passwordField, gbc);
+        passwordField.setBounds(160, 110, 180, 25);
+        panel.add(passwordField);
 
-        
         JLabel confirmPasswordLabel = new JLabel("Confirm Password:");
-        gbc.gridx = 0; gbc.gridy = 3;
-        panel.add(confirmPasswordLabel, gbc);
+        confirmPasswordLabel.setBounds(30, 150, 120, 25);
+        panel.add(confirmPasswordLabel);
 
         confirmPasswordField = new JPasswordField(20);
-        gbc.gridx = 1; gbc.gridy = 3;
-        panel.add(confirmPasswordField, gbc);
+        confirmPasswordField.setBounds(160, 150, 180, 25);
+        panel.add(confirmPasswordField);
 
-       
         JButton registerButton = new JButton("Sign Up");
-        gbc.gridx = 0; gbc.gridy = 4;
-        panel.add(registerButton, gbc);
+        registerButton.setBounds(50, 210, 120, 30);
+        panel.add(registerButton);
 
         JButton backButton = new JButton("Back to Sign In");
-        gbc.gridx = 1; gbc.gridy = 4;
-        panel.add(backButton, gbc);
+        backButton.setBounds(210, 210, 150, 30);
+        panel.add(backButton);
 
         add(panel);
 
-        
         registerButton.addActionListener(e -> registerUser());
         backButton.addActionListener(e -> backToLogin());
 
@@ -89,7 +81,7 @@ public class RegisterForm extends JFrame {
         }
 
         try (Connection conn = DBConnection.getConnection()) {
-            
+            // Check if username exists
             String checkUsernameSql = "SELECT * FROM users WHERE username = ?";
             PreparedStatement checkUsernameStmt = conn.prepareStatement(checkUsernameSql);
             checkUsernameStmt.setString(1, username);
@@ -99,7 +91,7 @@ public class RegisterForm extends JFrame {
                 return;
             }
 
-            
+            // Check if email exists
             String checkEmailSql = "SELECT * FROM users WHERE email = ?";
             PreparedStatement checkEmailStmt = conn.prepareStatement(checkEmailSql);
             checkEmailStmt.setString(1, email);
@@ -109,7 +101,7 @@ public class RegisterForm extends JFrame {
                 return;
             }
 
-            
+            // Insert new user
             String insertSql = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
             PreparedStatement insertStmt = conn.prepareStatement(insertSql);
             insertStmt.setString(1, username);
@@ -126,6 +118,6 @@ public class RegisterForm extends JFrame {
 
     private void backToLogin() {
         this.dispose();
-        Sign_In_Sign_Out.createLoginWindow(); 
+        Sign_In_Sign_Out.createLoginWindow();
     }
 }
