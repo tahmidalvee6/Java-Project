@@ -1,52 +1,56 @@
+import java.awt.event.*;
 import java.sql.*;
 import javax.swing.*;
 
-public class Sign_In_Sign_Out {
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> createLoginWindow());
-    }
+public class Sign_In_Sign_Out extends JFrame implements ActionListener {
+    private JTextField usernameField;
+    private JPasswordField passwordField;
+    private JButton loginButton, registerButton;
 
-    public static void createLoginWindow() {
-        JFrame loginFrame = new JFrame("Sign In");
-        loginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        loginFrame.setSize(400, 250);
-        loginFrame.setLocationRelativeTo(null);
-
-        JPanel panel = new JPanel();
-        panel.setLayout(null);  
+    public Sign_In_Sign_Out() {
+        setTitle("Sign In");
+        setSize(400, 250);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLayout(null);
 
         JLabel usernameLabel = new JLabel("Username:");
         usernameLabel.setBounds(50, 30, 100, 25);
-        panel.add(usernameLabel);
+        add(usernameLabel);
 
-        JTextField usernameField = new JTextField(20);
+        usernameField = new JTextField();
         usernameField.setBounds(150, 30, 180, 25);
-        panel.add(usernameField);
+        add(usernameField);
 
         JLabel passwordLabel = new JLabel("Password:");
         passwordLabel.setBounds(50, 70, 100, 25);
-        panel.add(passwordLabel);
+        add(passwordLabel);
 
-        JPasswordField passwordField = new JPasswordField(20);
+        passwordField = new JPasswordField();
         passwordField.setBounds(150, 70, 180, 25);
-        panel.add(passwordField);
+        add(passwordField);
 
-        JButton loginButton = new JButton("Sign In");
+        loginButton = new JButton("Sign In");
         loginButton.setBounds(50, 120, 120, 30);
-        panel.add(loginButton);
+        loginButton.addActionListener(this);
+        add(loginButton);
 
-        JButton registerButton = new JButton("Sign Up");
+        registerButton = new JButton("Sign Up");
         registerButton.setBounds(210, 120, 120, 30);
-        panel.add(registerButton);
+        registerButton.addActionListener(this);
+        add(registerButton);
 
-        loginFrame.add(panel);
+        setVisible(true);
+    }
 
-        loginButton.addActionListener(e -> {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == loginButton) {
             String username = usernameField.getText();
             String password = new String(passwordField.getPassword());
 
             if (username.isEmpty() || password.isEmpty()) {
-                JOptionPane.showMessageDialog(loginFrame, "Please fill in all fields", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Please fill in all fields", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
@@ -58,26 +62,23 @@ public class Sign_In_Sign_Out {
                 ResultSet rs = stmt.executeQuery();
 
                 if (rs.next()) {
-                    JOptionPane.showMessageDialog(loginFrame, "Welcome, " + username + "!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Welcome, " + username + "!", "Success", JOptionPane.INFORMATION_MESSAGE);
                 } else {
-                    JOptionPane.showMessageDialog(loginFrame, "Invalid credentials", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Invalid credentials", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(loginFrame, "Database error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Database error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
-        });
-
-        registerButton.addActionListener(e -> {
-            loginFrame.dispose();
+        } else if (e.getSource() == registerButton) {
+            this.dispose();
             new RegisterForm();
-        });
+        }
+    }
 
-        loginFrame.setVisible(true);
+    public static void main(String[] args) {
+        new Sign_In_Sign_Out();
     }
 }
-
-
-
 
 
 
