@@ -1,67 +1,80 @@
+import java.awt.event.*;
 import java.sql.*;
 import javax.swing.*;
 
-public class RegisterForm extends JFrame {
+public class RegisterForm extends JFrame implements ActionListener {
     private JTextField usernameField;
     private JTextField emailField;
     private JPasswordField passwordField;
     private JPasswordField confirmPasswordField;
+    private JButton registerButton, backButton;
 
     public RegisterForm() {
         setTitle("Sign Up");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(400, 350);
         setLocationRelativeTo(null);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLayout(null);
 
-        JPanel panel = new JPanel();
-        panel.setLayout(null);  // null layout
-
+        // Username Label and Field
         JLabel usernameLabel = new JLabel("Username:");
         usernameLabel.setBounds(30, 30, 120, 25);
-        panel.add(usernameLabel);
+        add(usernameLabel);
 
-        usernameField = new JTextField(20);
+        usernameField = new JTextField();
         usernameField.setBounds(160, 30, 180, 25);
-        panel.add(usernameField);
+        add(usernameField);
 
+        // Email Label and Field
         JLabel emailLabel = new JLabel("Email:");
         emailLabel.setBounds(30, 70, 120, 25);
-        panel.add(emailLabel);
+        add(emailLabel);
 
-        emailField = new JTextField(20);
+        emailField = new JTextField();
         emailField.setBounds(160, 70, 180, 25);
-        panel.add(emailField);
+        add(emailField);
 
+        // Password Label and Field
         JLabel passwordLabel = new JLabel("Password:");
         passwordLabel.setBounds(30, 110, 120, 25);
-        panel.add(passwordLabel);
+        add(passwordLabel);
 
-        passwordField = new JPasswordField(20);
+        passwordField = new JPasswordField();
         passwordField.setBounds(160, 110, 180, 25);
-        panel.add(passwordField);
+        add(passwordField);
 
+        // Confirm Password Label and Field
         JLabel confirmPasswordLabel = new JLabel("Confirm Password:");
-        confirmPasswordLabel.setBounds(30, 150, 120, 25);
-        panel.add(confirmPasswordLabel);
+        confirmPasswordLabel.setBounds(30, 150, 130, 25);
+        add(confirmPasswordLabel);
 
-        confirmPasswordField = new JPasswordField(20);
+        confirmPasswordField = new JPasswordField();
         confirmPasswordField.setBounds(160, 150, 180, 25);
-        panel.add(confirmPasswordField);
+        add(confirmPasswordField);
 
-        JButton registerButton = new JButton("Sign Up");
+        // Register Button
+        registerButton = new JButton("Sign Up");
         registerButton.setBounds(50, 210, 120, 30);
-        panel.add(registerButton);
+        registerButton.addActionListener(this);
+        add(registerButton);
 
-        JButton backButton = new JButton("Back to Sign In");
+        // Back Button
+        backButton = new JButton("Back to Sign In");
         backButton.setBounds(210, 210, 150, 30);
-        panel.add(backButton);
-
-        add(panel);
-
-        registerButton.addActionListener(e -> registerUser());
-        backButton.addActionListener(e -> backToLogin());
+        backButton.addActionListener(this);
+        add(backButton);
 
         setVisible(true);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == registerButton) {
+            registerUser();
+        } else if (e.getSource() == backButton) {
+            this.dispose();
+            new Sign_In_Sign_Out();  // এখানে আপনার লগইন ফ্রেমের constructor কল হবে
+        }
     }
 
     private void registerUser() {
@@ -110,14 +123,26 @@ public class RegisterForm extends JFrame {
             insertStmt.executeUpdate();
 
             JOptionPane.showMessageDialog(this, "Registration successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
-            backToLogin();
+            this.dispose();
+            new Sign_In_Sign_Out();  // আবার লগইন উইন্ডো খুলবে
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this, "Database error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    private void backToLogin() {
-        this.dispose();
-        Sign_In_Sign_Out.createLoginWindow();
+    public static void main(String[] args) {
+        new RegisterForm();
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
