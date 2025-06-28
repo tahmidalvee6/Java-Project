@@ -1,4 +1,3 @@
-import java.awt.*;
 import java.sql.*;
 import javax.swing.*;
 
@@ -7,40 +6,38 @@ public class Sign_In_Sign_Out {
         SwingUtilities.invokeLater(() -> createLoginWindow());
     }
 
-    public static void createLoginWindow() {  
+    public static void createLoginWindow() {
         JFrame loginFrame = new JFrame("Sign In");
         loginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         loginFrame.setSize(400, 250);
         loginFrame.setLocationRelativeTo(null);
 
-        JPanel panel = new JPanel(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10);
-        gbc.fill = GridBagConstraints.HORIZONTAL;
+        JPanel panel = new JPanel();
+        panel.setLayout(null);  
 
         JLabel usernameLabel = new JLabel("Username:");
-        gbc.gridx = 0; gbc.gridy = 0;
-        panel.add(usernameLabel, gbc);
+        usernameLabel.setBounds(50, 30, 100, 25);
+        panel.add(usernameLabel);
 
         JTextField usernameField = new JTextField(20);
-        gbc.gridx = 1; gbc.gridy = 0;
-        panel.add(usernameField, gbc);
+        usernameField.setBounds(150, 30, 180, 25);
+        panel.add(usernameField);
 
         JLabel passwordLabel = new JLabel("Password:");
-        gbc.gridx = 0; gbc.gridy = 1;
-        panel.add(passwordLabel, gbc);
+        passwordLabel.setBounds(50, 70, 100, 25);
+        panel.add(passwordLabel);
 
         JPasswordField passwordField = new JPasswordField(20);
-        gbc.gridx = 1; gbc.gridy = 1;
-        panel.add(passwordField, gbc);
+        passwordField.setBounds(150, 70, 180, 25);
+        panel.add(passwordField);
 
         JButton loginButton = new JButton("Sign In");
-        gbc.gridx = 0; gbc.gridy = 2;
-        panel.add(loginButton, gbc);
+        loginButton.setBounds(50, 120, 120, 30);
+        panel.add(loginButton);
 
         JButton registerButton = new JButton("Sign Up");
-        gbc.gridx = 1; gbc.gridy = 2;
-        panel.add(registerButton, gbc);
+        registerButton.setBounds(210, 120, 120, 30);
+        panel.add(registerButton);
 
         loginFrame.add(panel);
 
@@ -78,8 +75,6 @@ public class Sign_In_Sign_Out {
         loginFrame.setVisible(true);
     }
 }
-
-
 
 
 
